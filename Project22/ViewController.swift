@@ -21,7 +21,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
-        
+        startScanning()
         view.backgroundColor = UIColor.gray
     }
 
@@ -30,7 +30,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let beaconRegion = CLBeaconRegion(proximityUUID: uuid, major: 123, minor: 456, identifier: "MyBeacon")
         
         locationManager.startMonitoring(for: beaconRegion)
-        locationManager.stopRangingBeacons(in: beaconRegion)
+        locationManager.startRangingBeacons(in: beaconRegion)
     }
     
     func update(distance: CLProximity) {
@@ -54,11 +54,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             }
         }
     }
-
-}
-
-// MARK: - Location Manager Delegate Functions
-extension ViewController {
+    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedAlways {
             if CLLocationManager.isMonitoringAvailable(for: CLBeacon.self) {
@@ -77,5 +73,6 @@ extension ViewController {
             update(distance: .unknown)
         }
     }
+
 }
 
